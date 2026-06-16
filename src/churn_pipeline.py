@@ -77,6 +77,39 @@ def run_churn_pipeline():
     plt.savefig('outputs/churn_feature_importance.png', dpi=300)
     plt.close()
     
+    # ====================================================================
+    # NEW: CUSTOMER SEGMENTATION ENGINE (At Risk, Loyal, Dormant)
+    # ====================================================================
+    print("🎯 Categorizing subscriber accounts into strategic business segments...")
+    
+    # Predict the probability of churning instead of just a hard 0 or 1
+    # probabilities[:, 1] gives us a score from 0.0 to 1.0 of how likely they are to leave
+    probabilities = model.predict_proba(X_test)[:, 1]
+    
+    segment_df = pd.DataFrame({
+        'true_status': y_test.values,
+        'churn_probability': probabilities,
+        'tenure_months': X_test['tenure'] if 'tenure' in X_test.columns else 0
+    })
+    
+    # Assign Segments based on model probability and account longevity metrics
+    conditions = [
+        (segment_df['churn_probability'] >= 0.60),                                # High risk score
+        (segment_df['churn_probability'] < 0.30) & (segment_df['tenure_months'] >= 24), # Low risk + long relationship
+        (segment_df['churn_probability'] < 0.60) & (segment_df['tenure_months'] < 6)    # Low risk but zero activity/new account
+    ]
+    choices = ['At Risk', 'Loyal', 'Dormant']
+    
+    segment_df['customer_segment'] = np.select(conditions, choices, default='Standard Active')
+    
+    # Save the segmentation summary metrics to a CSV file for your report
+    segment_summary = segment_df['customer_segment'].value_counts()
+    segment_df.to_csv('outputs/customer_segments_manifest.csv', index=False)
+    
+    print("\n--- [CUSTOMER SEGMENTATION SUMMARY] ---")
+    for segment, count in segment_summary.items():
+        print(f"📦 Segment Group: {segment:<15} | Volume: {count} accounts mapped.")
+        
     print("✓ Outputs saved successfully to 'outputs/' directory!")
     print("=" * 60)
 
