@@ -1,90 +1,135 @@
-# Telecom Customer Churn Prediction & Feature Explainability Engine
+# 📱 Telecom Customer Churn Prediction & Feature Explainability Engine
 
-Data Science portfolio framework for predictive modeling and operational customer segmentation using the public IBM Telco Customer Churn dataset. The repository contains a self-contained Jupyter notebook that ingests the official dataset, performs preprocessing and feature engineering, trains a Random Forest classifier, exports diagnostics (plots & metrics), and generates an operational customer segmentation manifest.
+**Predictive Operational Modeling & Machine Learning Ingestion Pipeline**
 
-## Key Features
-- Automated dataset extraction from the official IBM Telco CSV.
-- Data cleaning & preprocessing (handles blank TotalCharges values).
-- One-hot encoding of categorical features.
-- Imbalance-aware Random Forest classifier (class_weight='balanced_subsample').
-- Model evaluation (accuracy, precision/recall/f1, confusion matrix).
-- Diagnostic visual assets: confusion matrix and top feature importance chart (Gini).
-- Operational segmentation: exports `customer_segments_manifest.csv` (Loyal / At Risk / Dormant / Standard Active).
+This repository houses an end-to-end, production-grade machine learning classification pipeline designed to proactively predict subscriber attrition (*churn*) using the official multi-dimensional IBM Telco Dataset (7,043 historical customer profiles).
 
-## Repository structure
-- data/  
-  - (created by notebook) dataset saved as `Telco-Customer-Churn.csv`
-- documents/  
-  - (project documentation, if any)
-- outputs/  
-  - (created by notebook) `churn_confusion_matrix.png`, `churn_feature_importance.png`, `customer_segments_manifest.csv`
-- src/
-  - churn_notebook.ipynb — primary notebook implementing the pipeline
+By implementing an imbalance-aware modeling architecture, the framework optimizes decision boundaries to aggressively prioritize the identification of flight-risk subscribers. It then automatically parses account telemetry variables into clear, interpretative business strategies and strategic customer portfolios.
 
-## Notebook snapshot
-The main pipeline lives in `src/churn_notebook.ipynb`. Highlights from the notebook:
-- Downloads dataset: https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv
-- Cleans `TotalCharges`, maps `Churn` to binary target, one-hot encodes categorical variables.
-- Trains RandomForestClassifier(n_estimators=100, max_depth=10, class_weight='balanced_subsample').
-- Example reported test accuracy (from run in notebook): ~76.8% and a balanced classification report.
-- Saves visualizations and `customer_segments_manifest.csv` to `outputs/`.
+---
 
-## Requirements
-- Python 3.8+ (notebook metadata shows Python 3.11)
-- Recommended packages:
-  - pandas, numpy, matplotlib, seaborn, scikit-learn, jupyter (or jupyterlab)
-- Example install:
+## 🚀 Key Architectural Features
+
+- **Automated Ingestion Layer:** Programmable hook that securely fetches, standardizes, and mirrors the official IBM Telco customer ledger directly to local workspaces.
+- **Robust Feature Engineering:** Cleans implicit data gaps within continuous tracking attributes (`TotalCharges`) via median target imputation and maps textual variables using sparse one-hot binary vectorization.
+- **Cost-Sensitive Learning Optimization:** Deploys an ensemble Random Forest algorithm tuned with balanced subsampling weights (`class_weight='balanced_subsample'`) to directly counter real-world subscriber distribution imbalances.
+- **Explainable AI Engine:** Isolates global Gini impurity metrics to score, rank, and visibly map the top operational drivers behind account cancellation.
+- **Dynamic Retention Segmentation:** Replaces flat binary outputs with a custom probability routing engine that partitions subscribers into actionable business segments (*At Risk*, *Loyal*, *Dormant*, *Standard Active*).
+
+---
+
+## 📊 Pipeline Diagnostic Outputs & Performance Benchmarks
+
+### 1) Cost-Sensitive Model Performance
+
+By penalizing the misclassification of the minority churn class, the framework maximizes true positive flags, shifting active subscriber recall up to **73%** to protect core enterprise margins.
+
+```text
+✓ Stratified Testing Accuracy Score: 76.79%
+
+✓ Optimized Classification Report Summary:
+              precision    recall  f1-score   support
+
+           0       0.89      0.78      0.83      1035
+           1       0.55      0.73      0.63       374
+
+    accuracy                           0.77      1409
+   macro avg       0.72      0.76      0.73      1409
+weighted avg       0.80      0.77      0.78      1409
+```
+
+Additional diagnostics exported by the notebook:
+
+- **Confusion matrix heatmap**
+- **Global operational drivers (XAI Gini feature importance chart)**
+
+### 2) Algorithmic Customer Segmentation Manifest
+
+The evaluation engine maps the validation ledger directly into operational portfolios cached inside `outputs/customer_segments_manifest.csv` for targeted marketing CRM campaigns:
+
+- 📦 **Loyal Portfolio:** 549 accounts — high longevity, low-probability secure enterprise assets.
+- 📦 **At-Risk Portfolio:** 387 accounts — high model risk indicators (≥ 60% probability), high-priority targets.
+- 📦 **Standard Active Portfolio:** 377 accounts — normal baseline subscribers running within stable cycles.
+- 📦 **Dormant Portfolio:** 96 accounts — low activity signatures coupled with early life-cycle tenure states.
+
+---
+
+## 📁 Repository Structure
+
+```text
+telecom-churn-intelligence/
+│
+├── data/
+│   └── Telco-Customer-Churn.csv         # Cached copy of official IBM dataset
+│
+├── src/
+│   └── churn_notebook.ipynb             # Interactive primary notebook pipeline
+│
+├── outputs/
+│   ├── churn_confusion_matrix.png       # Exported Seaborn performance heatmap
+│   ├── churn_feature_importance.png     # Exported Gini contribution chart
+│   └── customer_segments_manifest.csv   # Mapped subscriber account manifest
+│
+└── README.md                            # Repository master documentation
+```
+
+---
+
+## 🛠️ Environment Initialization & Requirements
+
+- **Core Runtime Environment:** Python 3.8+ (development verified on Python 3.11)
+- **Required Core Libraries:** `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `jupyter`
+
+### Standard Local Dependency Virtual Setup
+
 ```bash
+# Initialize clean virtual environment
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+# Activate environment layer
+source .venv/bin/activate  # Windows Terminal: .venv\Scripts\activate
+
+# Upgrade dependency managers and install library array
 pip install --upgrade pip
 pip install pandas numpy matplotlib seaborn scikit-learn jupyter
 ```
-(Or create a `requirements.txt` with these packages and run `pip install -r requirements.txt`.)
 
-## How to run
-1. Clone the repository and change to its root:
+---
+
+## 🏃‍♂️ Execution Blueprint
+
+> ⚠️ **CRITICAL RUNTIME REQUIREMENT:** To ensure notebook relative paths (`../data`, `../outputs`) resolve correctly without path errors, always initialize your Jupyter workspace from the repository root directory.
+
+### 1) Interactive Development Execution
+
 ```bash
-git clone https://github.com/ishanpote/telecom-churn-intelligence.git
-cd telecom-churn-intelligence
-```
-2. Start Jupyter and open the notebook:
-```bash
+# Open notebook canvas via root terminal boundary
 jupyter notebook src/churn_notebook.ipynb
-# or
-jupyter lab src/churn_notebook.ipynb
 ```
-3. Run the notebook cells (recommended to run top-to-bottom). The notebook will:
-   - Download and save the dataset to `data/Telco-Customer-Churn.csv`.
-   - Create `outputs/` and write:
-     - `churn_confusion_matrix.png`
-     - `churn_feature_importance.png`
-     - `customer_segments_manifest.csv`
 
-4. (Optional) Run headless to execute the notebook and capture outputs:
+Then select **Run All** from the notebook toolbar. The automated pipeline cells will sequentially execute ingestion, transform dimensions, compile diagnostics, and write assets back to `outputs/`.
+
+### 2) Headless Production Execution (Automated Script Run)
+
+To trigger the machine learning pipeline via terminal and export an updated executed notebook artifact:
+
 ```bash
 jupyter nbconvert --to notebook --execute src/churn_notebook.ipynb --output executed_notebook.ipynb
 ```
 
-Important: run the notebook from the repository root so the notebook's relative paths (`../data`, `../outputs`) resolve correctly.
+---
 
-## Notes & Reproducibility
-- The notebook sets `random_state=42` for deterministic splitting and model training where applicable.
-- Kernel metadata: Python 3; nbformat 4.
-- Consider adding an explicit `requirements.txt` and a `runtime.txt` if you need to reproduce exact package versions.
+## 💡 Future Pipeline Hardening Ideas
 
-## Customization ideas
-- Hyperparameter tuning with cross-validation (GridSearchCV or RandomizedSearchCV).
-- Try other models (XGBoost, LightGBM) and compare ROC/AUC.
-- Add SHAP or LIME for local explainability (per-account explanations).
-- Add automated model logging (MLflow) and serialization for deployment.
+- **Hyperparameter Search Space Optimization:** Expand model tuning grids using cross-validated `RandomizedSearchCV`.
+- **Alternative Boosting Architectures:** Benchmark Random Forest baselines against gradient-boosted models (XGBoost, LightGBM) and compare ROC/AUC.
+- **Local Interpretability Upgrades:** Integrate SHAP values or LIME to extract precise, feature-level rationale for individual account profiles.
 
-## Contributing
-- Open an issue or PR with improvements, versioned requirements, or pipeline hardening.
-- Add a LICENSE file if you want to make the project publicly reusable.
+---
 
-## License
-No license file is present in this repository. Add a LICENSE to clarify reuse terms (MIT, Apache 2.0, etc.).
+## 📄 License & Ownership
 
-## Contact
-Repository owner: ishanpote (https://github.com/ishanpote)
+- **Author Profile:** Ishan Pote (GitHub Portfolio Interface)
+- **Open-Source Tracking:** Pull requests and version-hardening submissions are welcome via open issues.
+
+> Note: No explicit LICENSE file is currently present in the repository. Add one (e.g., MIT, Apache-2.0) to clarify reuse terms.
