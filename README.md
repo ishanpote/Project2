@@ -131,5 +131,3 @@ jupyter nbconvert --to notebook --execute src/churn_notebook.ipynb --output exec
 
 - **Author Profile:** Ishan Pote (GitHub Portfolio Interface)
 - **Open-Source Tracking:** Pull requests and version-hardening submissions are welcome via open issues.
-
-> Note: No explicit LICENSE file is currently present in the repository. Add one (e.g., MIT, Apache-2.0) to clarify reuse terms.
